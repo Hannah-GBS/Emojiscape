@@ -58,7 +58,7 @@ public class emojiscapePlugin extends Plugin
 {
 	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
 	private static final Pattern WHITESPACE_REGEXP = Pattern.compile("[\\s\\u00A0]");
-	private static final Pattern PUNCTUATION_REGEXP = Pattern.compile("[\\.\\:]$");
+	private static final Pattern PUNCTUATION_REGEXP = Pattern.compile("[\\W\\_]");
 
 	@Inject
 	private Client client;
