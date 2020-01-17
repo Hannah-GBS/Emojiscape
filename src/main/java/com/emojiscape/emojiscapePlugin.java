@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import com.google.inject.Provides;
 import joptsimple.internal.Strings;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -21,19 +22,27 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.config.ConfigManager;
 
 @PluginDescriptor(
-		name = "EmojiScape",
-		description = "Adds Runescape icons to chat"
+	name = "EmojiScape",
+	description = "Adds Runescape icons to chat"
 )
 @Slf4j
 public class emojiscapePlugin extends Plugin
 {
 	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
 	private static final Pattern WHITESPACE_REGEXP = Pattern.compile("[\\s\\u00A0]");
+	private static final Pattern PUNCTUATION_REGEXP = Pattern.compile("[\\.\\:]$");
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ConfigManager configManager;
+
+	@Inject
+	private emojiscapeConfig config;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -41,7 +50,10 @@ public class emojiscapePlugin extends Plugin
 	private int modIconsStart = -1;
 
 	@Override
-	protected void startUp(){loadRSEmojiIcons();};
+	protected void startUp()
+	{
+		loadRSEmojiIcons();
+	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
@@ -87,7 +99,7 @@ public class emojiscapePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if(client.getGameState() != GameState.LOGGED_IN || modIconsStart == -1)
+		if (client.getGameState() != GameState.LOGGED_IN || modIconsStart == -1)
 		{
 			return;
 		}
@@ -147,17 +159,35 @@ public class emojiscapePlugin extends Plugin
 		for (int i = 0; i < messageWords.length; i++)
 		{
 			//Remove tags except for <lt> and <gt>
-			final String trigger = removeTags(messageWords[i]);
+			final String pretrigger = removeTags(messageWords[i]);
+			final Matcher matcherTrigger = PUNCTUATION_REGEXP.matcher(pretrigger);
+			final String trigger = matcherTrigger.replaceAll("");
+			final String shortTrigger = trigger;
 			final RSEmoji rsEmoji = RSEmoji.getRSEmoji(trigger.toLowerCase());
+			final RSEmoji rsShortEmoji = RSEmoji.getShortRSEmoji(shortTrigger.toLowerCase());
 
-			if (rsEmoji == null)
+			if (rsEmoji == null && rsShortEmoji == null)
 			{
 				continue;
 			}
 
-			final int rsEmojiId = modIconsStart + rsEmoji.ordinal();
+			if (rsEmoji != null)
+			{
+				final int rsEmojiId = modIconsStart + rsEmoji.ordinal();
+				if (config.longTriggers() == true)
+				{
+					messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsEmojiId + ">");
+				}
+			}
 
-			messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsEmojiId + ">");
+			if (rsShortEmoji != null)
+			{
+				final int rsShortEmojiId = modIconsStart + rsShortEmoji.ordinal();
+				if (config.shortTriggers() == true)
+				{
+					messageWords[i] = messageWords[i].replace(shortTrigger, "<img=" + rsShortEmojiId + ">");
+				}
+			}
 			editedMessage = true;
 		}
 
@@ -169,6 +199,7 @@ public class emojiscapePlugin extends Plugin
 
 		return Strings.join(messageWords, " ");
 	}
+
 	/**
 	 * Remove tags, except for &lt;lt&gt; and &lt;gt&gt;
 	 *
@@ -192,5 +223,11 @@ public class emojiscapePlugin extends Plugin
 		}
 		matcher.appendTail(stringBuffer);
 		return stringBuffer.toString();
+	}
+
+	@Provides
+	emojiscapeConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(emojiscapeConfig.class);
 	}
 }
