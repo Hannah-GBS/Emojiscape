@@ -58,6 +58,7 @@ public class emojiscapePlugin extends Plugin
 {
 	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
 	private static final Pattern WHITESPACE_REGEXP = Pattern.compile("[\\s\\u00A0]");
+	private static final Pattern SLASH_REGEXP = Pattern.compile("[\\/]");
 	private static final Pattern PUNCTUATION_REGEXP = Pattern.compile("[\\W\\_]");
 
 	@Inject
@@ -178,51 +179,56 @@ public class emojiscapePlugin extends Plugin
 	@Nullable
 	String updateMessage(final String message)
 	{
-		final String[] messageWords = WHITESPACE_REGEXP.split(message);
-
+		final String[] slashWords = SLASH_REGEXP.split(message);
 		boolean editedMessage = false;
-		for (int i = 0; i < messageWords.length; i++)
+		for (int s = 0; s < slashWords.length; s++)
 		{
-			//Remove tags except for <lt> and <gt>
-			final String pretrigger = removeTags(messageWords[i]);
-			final Matcher matcherTrigger = PUNCTUATION_REGEXP.matcher(pretrigger);
-			final String trigger = matcherTrigger.replaceAll("");
-			final String shortTrigger = trigger;
-			final RSEmoji rsEmoji = RSEmoji.getRSEmoji(trigger.toLowerCase());
-			final RSEmoji rsShortEmoji = RSEmoji.getShortRSEmoji(shortTrigger.toLowerCase());
+			final String[] messageWords = WHITESPACE_REGEXP.split(slashWords[s]);
 
-			if (rsEmoji == null && rsShortEmoji == null)
+			//boolean editedMessage = false;
+			for (int i = 0; i < messageWords.length; i++)
 			{
-				continue;
-			}
+				//Remove tags except for <lt> and <gt>
+				final String pretrigger = removeTags(messageWords[i]);
+				final Matcher matcherTrigger = PUNCTUATION_REGEXP.matcher(pretrigger);
+				final String trigger = matcherTrigger.replaceAll("");
+				final String shortTrigger = trigger;
+				final RSEmoji rsEmoji = RSEmoji.getRSEmoji(trigger.toLowerCase());
+				final RSEmoji rsShortEmoji = RSEmoji.getShortRSEmoji(shortTrigger.toLowerCase());
 
-			if (rsEmoji != null)
-			{
-				final int rsEmojiId = modIconsStart + rsEmoji.ordinal();
-				if (config.longTriggers() == true)
+				if (rsEmoji == null && rsShortEmoji == null)
 				{
-					messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsEmojiId + ">");
+					continue;
 				}
-			}
 
-			if (rsShortEmoji != null)
-			{
-				final int rsShortEmojiId = modIconsStart + rsShortEmoji.ordinal();
-				if (config.shortTriggers() == true)
+				if (rsEmoji != null)
 				{
-					messageWords[i] = messageWords[i].replace(shortTrigger, "<img=" + rsShortEmojiId + ">");
+					final int rsEmojiId = modIconsStart + rsEmoji.ordinal();
+					if (config.longTriggers() == true)
+					{
+						messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsEmojiId + ">");
+					}
 				}
+
+				if (rsShortEmoji != null)
+				{
+					final int rsShortEmojiId = modIconsStart + rsShortEmoji.ordinal();
+					if (config.shortTriggers() == true)
+					{
+						messageWords[i] = messageWords[i].replace(shortTrigger, "<img=" + rsShortEmojiId + ">");
+					}
+				}
+				editedMessage = true;
 			}
-			editedMessage = true;
+			slashWords[s] = Strings.join(messageWords, " ");
 		}
 
-		// If we haven't edited the message any, don't update it.
 		if (!editedMessage)
 		{
 			return null;
 		}
 
-		return Strings.join(messageWords, " ");
+		return Strings.join(slashWords, "/");
 	}
 
 	/**
