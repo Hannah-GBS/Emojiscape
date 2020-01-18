@@ -185,7 +185,6 @@ public class emojiscapePlugin extends Plugin
 		{
 			final String[] messageWords = WHITESPACE_REGEXP.split(slashWords[s]);
 
-			//boolean editedMessage = false;
 			for (int i = 0; i < messageWords.length; i++)
 			{
 				//Remove tags except for <lt> and <gt>
@@ -206,7 +205,14 @@ public class emojiscapePlugin extends Plugin
 					final int rsEmojiId = modIconsStart + rsEmoji.ordinal();
 					if (config.longTriggers() == true)
 					{
-						messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsEmojiId + ">");
+						if (config.swapSkillMode() == SkillMode.REPLACE)
+						{
+							messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsEmojiId + ">");
+						}
+						else if (config.swapSkillMode() == SkillMode.APPEND)
+						{
+							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsEmojiId + ">)");
+						}
 					}
 				}
 
@@ -215,7 +221,14 @@ public class emojiscapePlugin extends Plugin
 					final int rsShortEmojiId = modIconsStart + rsShortEmoji.ordinal();
 					if (config.shortTriggers() == true)
 					{
-						messageWords[i] = messageWords[i].replace(shortTrigger, "<img=" + rsShortEmojiId + ">");
+						if (config.swapSkillMode() == SkillMode.REPLACE)
+						{
+							messageWords[i] = messageWords[i].replace(shortTrigger, "<img=" + rsShortEmojiId + ">");
+						}
+						else if (config.swapSkillMode() == SkillMode.APPEND)
+						{
+							messageWords[i] = messageWords[i].replace(shortTrigger, shortTrigger + "(<img=" + rsShortEmojiId + ">)");
+						}
 					}
 				}
 				editedMessage = true;

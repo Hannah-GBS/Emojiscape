@@ -25,43 +25,21 @@
 
 package com.emojiscape;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@ConfigGroup("EmojiScape")
-public interface emojiscapeConfig extends Config
+@Getter
+@RequiredArgsConstructor
+public enum SkillMode
 {
-	@ConfigItem(
-		keyName = "longTriggers",
-		name = "Long Triggers",
-		description = "Matches full skill names (eg. \"Attack\", \"Construction\", etc)",
-		position = 1
-	)
-	default boolean longTriggers()
-	{
-		return true;
-	}
+	REPLACE("Replace text"),
+	APPEND("After text");
 
-	@ConfigItem(
-		keyName = "shortTriggers",
-		name = "Short Triggers",
-		description = "Matches abbreviated skill names (eg. \"att\", \"con\", etc)",
-		position = 2
-	)
-	default boolean shortTriggers()
-	{
-		return true;
-	}
+	private final String name;
 
-	@ConfigItem(
-		keyName = "swapSkillMode",
-		name = "Icon Mode",
-		description = "Choose whether the skill icon should replace the text, or appear after it",
-		position = 3
-	)
-	default SkillMode swapSkillMode()
+	@Override
+	public String toString()
 	{
-		return SkillMode.REPLACE;
+		return name;
 	}
 }
