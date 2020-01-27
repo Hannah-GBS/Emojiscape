@@ -25,43 +25,21 @@
 
 package com.emojiscape;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@ConfigGroup("EmojiScape")
-public interface emojiscapeConfig extends Config
+@Getter
+@RequiredArgsConstructor
+public enum IconMode
 {
-	@ConfigItem(
-		keyName = "swapIconMode",
-		name = "Icon Mode",
-		description = "Choose whether the skill icon should replace the text, or appear after it",
-		position = 1
-	)
-	default IconMode swapIconMode()
-	{
-		return IconMode.REPLACE;
-	}
+	REPLACE("Replace text"),
+	APPEND("After text");
 
-	@ConfigItem(
-		keyName = "skillIcons",
-		name = "Skill Icons",
-		description = "Enable icons for skills, with long and/or short triggers",
-		position = 2
-	)
-	default SkillIcons skillIcons()
-	{
-		return SkillIcons.BOTH;
-	}
+	private final String name;
 
-	@ConfigItem(
-		keyName = "prayerIcons",
-		name = "Prayer Icons",
-		description = "Enables icons for high level prayers (from Retribution to Augury)",
-		position = 3
-	)
-	default boolean prayerIcons()
+	@Override
+	public String toString()
 	{
-		return true;
+		return name;
 	}
 }

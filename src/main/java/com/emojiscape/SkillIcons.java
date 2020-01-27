@@ -30,10 +30,12 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum SkillMode
+public enum SkillIcons
 {
-	REPLACE("Replace text"),
-	APPEND("After text");
+	OFF("Off"),
+	LONG("Long Triggers"),
+	SHORT("Short Triggers"),
+	BOTH("Both");
 
 	private final String name;
 

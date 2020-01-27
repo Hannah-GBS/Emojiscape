@@ -29,7 +29,6 @@ import com.google.common.collect.ImmutableMap;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 import net.runelite.client.util.ImageUtil;
-import javax.inject.Inject;
 
 
 enum RSEmoji
@@ -37,6 +36,7 @@ enum RSEmoji
 	AGILITY("agility", "agi"),
 	ATTACK("attack", "att"),
 	COMBAT("combat", "cmb"),
+	MELEE("melee", "melee"),
 	CONSTRUCTION("construction", "con"),
 	COOKING("cooking", "cook"),
 	CRAFTING("crafting", "craft"),
@@ -58,13 +58,18 @@ enum RSEmoji
 	STRENGTH("strength", "str"),
 	THIEVING("thieving", "thief"),
 	WOODCUTTING("woodcutting", "wc"),
+	AUGURY("augury", "augury"),
+	CHIVALRY("chivalry", "chivalry"),
+	PIETY("piety", "piety"),
+	PRESERVE("preserve", "preserve"),
+	REDEMPTION("redemption", "redemption"),
+	RETRIBUTION("retribution", "retribution"),
+	RIGOUR("rigour", "rigour"),
+	SMITE("smite", "smite"),
 	;
 
-	@Inject
-	private emojiscapeConfig config;
-
-	private static final Map<String, RSEmoji> rsLongEmojiMap;
-	private static final Map<String, RSEmoji> rsShortEmojiMap;
+	private static final Map<String, RSEmoji> skillLongEmojiMap;
+	private static final Map<String, RSEmoji> skillShortEmojiMap;
 
 	private final String longTrigger;
 	private final String shortTrigger;
@@ -73,24 +78,24 @@ enum RSEmoji
 	{
 		ImmutableMap.Builder<String, RSEmoji> builder = new ImmutableMap.Builder<>();
 
-		for (final RSEmoji rsEmoji : values())
+		for (final RSEmoji RSEmoji : values())
 		{
-			builder.put(rsEmoji.longTrigger, rsEmoji);
+			builder.put(RSEmoji.longTrigger, RSEmoji);
 		}
 
-		rsLongEmojiMap = builder.build();
+		skillLongEmojiMap = builder.build();
 	}
 
 	static
 	{
 		ImmutableMap.Builder<String, RSEmoji> builder = new ImmutableMap.Builder<>();
 
-		for (final RSEmoji rsEmoji : values())
+		for (final RSEmoji RSEmoji : values())
 		{
-			builder.put(rsEmoji.shortTrigger, rsEmoji);
+			builder.put(RSEmoji.shortTrigger, RSEmoji);
 		}
 
-		rsShortEmojiMap = builder.build();
+		skillShortEmojiMap = builder.build();
 	}
 
 	RSEmoji(String longTrigger, String shortTrigger)
@@ -106,12 +111,12 @@ enum RSEmoji
 
 	public static RSEmoji getRSEmoji(String longTrigger)
 	{
-		return rsLongEmojiMap.get(longTrigger);
+		return skillLongEmojiMap.get(longTrigger);
 	}
 
 	public static RSEmoji getShortRSEmoji(String shortTrigger)
 	{
-		return rsShortEmojiMap.get(shortTrigger);
+		return skillShortEmojiMap.get(shortTrigger);
 	}
 
 }

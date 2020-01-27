@@ -98,23 +98,23 @@ public class emojiscapePlugin extends Plugin
 			return;
 		}
 
-		final RSEmoji[] rsEmojis = RSEmoji.values();
-		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + rsEmojis.length);
+		final RSEmoji[] RSEmojis = RSEmoji.values();
+		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + RSEmojis.length);
 		modIconsStart = modIcons.length;
 
-		for (int i = 0; i < rsEmojis.length; i++)
+		for (int i = 0; i < RSEmojis.length; i++)
 		{
-			final RSEmoji rsEmoji = rsEmojis[i];
+			final RSEmoji RSEmoji = RSEmojis[i];
 
 			try
 			{
-				final BufferedImage image = rsEmoji.loadImage();
+				final BufferedImage image = RSEmoji.loadImage();
 				final IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
 				newModIcons[modIconsStart + i] = sprite;
 			}
 			catch (Exception ex)
 			{
-				log.warn("Failed to load the sprite for RSEmoji " + rsEmoji, ex);
+				log.warn("Failed to load the sprite for RSEmoji " + RSEmoji, ex);
 			}
 		}
 
@@ -200,34 +200,75 @@ public class emojiscapePlugin extends Plugin
 					continue;
 				}
 
+				boolean skillLong = false;
+				boolean skillShort = false;
+
+				switch (config.skillIcons())
+				{
+					case LONG:
+						skillLong = true;
+						break;
+					case SHORT:
+						skillShort = true;
+						break;
+					case BOTH:
+						skillLong = true;
+						skillShort = true;
+						break;
+				}
+
 				if (rsEmoji != null)
 				{
 					final int rsEmojiId = modIconsStart + rsEmoji.ordinal();
-					if (config.longTriggers() == true)
+					if (skillLong && 0 <= rsEmoji.ordinal() && rsEmoji.ordinal() <= 24)
 					{
-						if (config.swapSkillMode() == SkillMode.REPLACE)
+						if (config.swapIconMode() == IconMode.REPLACE)
 						{
 							messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsEmojiId + ">");
 						}
-						else if (config.swapSkillMode() == SkillMode.APPEND)
+						else if (config.swapIconMode() == IconMode.APPEND)
 						{
 							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsEmojiId + ">)");
 						}
+					}
+					if (config.prayerIcons() && 25 <= rsEmoji.ordinal() && rsEmoji.ordinal() <= 32)
+					{
+						if (config.swapIconMode() == IconMode.REPLACE)
+						{
+							messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsEmojiId + ">");
+						}
+						else if (config.swapIconMode() == IconMode.APPEND)
+						{
+							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsEmojiId + ">)");
+						}
+						editedMessage = true;
 					}
 				}
 
 				if (rsShortEmoji != null)
 				{
 					final int rsShortEmojiId = modIconsStart + rsShortEmoji.ordinal();
-					if (config.shortTriggers() == true)
+					if (skillShort && 0 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 24)
 					{
-						if (config.swapSkillMode() == SkillMode.REPLACE)
+						if (config.swapIconMode() == IconMode.REPLACE)
 						{
 							messageWords[i] = messageWords[i].replace(shortTrigger, "<img=" + rsShortEmojiId + ">");
 						}
-						else if (config.swapSkillMode() == SkillMode.APPEND)
+						else if (config.swapIconMode() == IconMode.APPEND)
 						{
 							messageWords[i] = messageWords[i].replace(shortTrigger, shortTrigger + "(<img=" + rsShortEmojiId + ">)");
+						}
+					}
+
+					if (config.prayerIcons() && 25 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 32 && editedMessage == false)
+					{
+						if (config.swapIconMode() == IconMode.REPLACE)
+						{
+							messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsShortEmojiId + ">");
+						}
+						else if (config.swapIconMode() == IconMode.APPEND)
+						{
+							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsShortEmojiId + ">)");
 						}
 					}
 				}
