@@ -187,6 +187,7 @@ public class emojiscapePlugin extends Plugin
 
 			for (int i = 0; i < messageWords.length; i++)
 			{
+				editedMessage = false;
 				//Remove tags except for <lt> and <gt>
 				final String pretrigger = removeTags(messageWords[i]);
 				final Matcher matcherTrigger = PUNCTUATION_REGEXP.matcher(pretrigger);
@@ -217,10 +218,10 @@ public class emojiscapePlugin extends Plugin
 						break;
 				}
 
-				if (rsEmoji != null)
+				if (rsEmoji != null && skillLong)
 				{
 					final int rsEmojiId = modIconsStart + rsEmoji.ordinal();
-					if (skillLong && 0 <= rsEmoji.ordinal() && rsEmoji.ordinal() <= 24)
+					if (0 <= rsEmoji.ordinal() && rsEmoji.ordinal() <= 24)
 					{
 						if (config.swapIconMode() == IconMode.REPLACE)
 						{
@@ -241,14 +242,14 @@ public class emojiscapePlugin extends Plugin
 						{
 							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsEmojiId + ">)");
 						}
-						editedMessage = true;
 					}
+					editedMessage = true;
 				}
 
-				if (rsShortEmoji != null)
+				if (rsShortEmoji != null && skillShort && editedMessage == false)
 				{
 					final int rsShortEmojiId = modIconsStart + rsShortEmoji.ordinal();
-					if (skillShort && 0 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 24)
+					if (0 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 24)
 					{
 						if (config.swapIconMode() == IconMode.REPLACE)
 						{
@@ -260,7 +261,7 @@ public class emojiscapePlugin extends Plugin
 						}
 					}
 
-					if (config.prayerIcons() && 25 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 32 && editedMessage == false)
+					if (config.prayerIcons() && 25 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 32)
 					{
 						if (config.swapIconMode() == IconMode.REPLACE)
 						{
