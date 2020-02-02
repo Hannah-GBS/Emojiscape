@@ -72,6 +72,7 @@ enum RSEmoji
 	SHORTCUT("shortcut", "shortcut"),
 	QUEST("quest", "qp"),
 	DIARY("diary", "diary"),
+	MINIGAME("minigame", "minigame"),
 	FAVOUR("favour", "favour"),
 	ARCEUUS("arceuus", "arc"),
 	HOSIDIUS("hosidius", "hosi"),

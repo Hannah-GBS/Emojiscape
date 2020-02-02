@@ -259,7 +259,7 @@ public class emojiscapePlugin extends Plugin
 							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsEmojiId + ">)");
 						}
 					}
-					if (miscLong && 33 <= rsEmoji.ordinal() && rsEmoji.ordinal() <= 50)
+					if (miscLong && 33 <= rsEmoji.ordinal() && rsEmoji.ordinal() <= 51)
 					{
 						if (config.swapIconMode() == IconMode.REPLACE)
 						{
@@ -300,7 +300,7 @@ public class emojiscapePlugin extends Plugin
 						}
 					}
 
-					if (miscShort && 33 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 50)
+					if (miscShort && 33 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 51)
 					{
 						if (config.swapIconMode() == IconMode.REPLACE)
 						{
