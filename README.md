@@ -23,7 +23,7 @@ Triggers are **not** case sensitive and can be preceded or followed by numbers a
 
 For example, "99fm!" would be shown as "99![fm](src/main/resources/Skills/firemaking.png)!" in Replace Text mode and "99fm(![fm](src/main/resources/Skills/firemaking.png))!" in After Text mode.
 
-###Skills
+### Skills
 
 Skills have both Long and Short triggers:
 
