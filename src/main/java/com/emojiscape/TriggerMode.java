@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum SkillIcons
+public enum TriggerMode
 {
 	OFF("Off"),
 	LONG("Long Triggers"),

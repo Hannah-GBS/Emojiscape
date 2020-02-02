@@ -59,7 +59,7 @@ public class emojiscapePlugin extends Plugin
 	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
 	private static final Pattern WHITESPACE_REGEXP = Pattern.compile("[\\s\\u00A0]");
 	private static final Pattern SLASH_REGEXP = Pattern.compile("[\\/]");
-	private static final Pattern PUNCTUATION_REGEXP = Pattern.compile("[\\W\\_]");
+	private static final Pattern PUNCTUATION_REGEXP = Pattern.compile("[\\W\\_\\d]");
 
 	@Inject
 	private Client client;
@@ -203,6 +203,8 @@ public class emojiscapePlugin extends Plugin
 
 				boolean skillLong = false;
 				boolean skillShort = false;
+				boolean miscLong = false;
+				boolean miscShort = false;
 
 				switch (config.skillIcons())
 				{
@@ -218,10 +220,24 @@ public class emojiscapePlugin extends Plugin
 						break;
 				}
 
-				if (rsEmoji != null && skillLong)
+				switch (config.miscIcons())
+				{
+					case LONG:
+						miscLong = true;
+						break;
+					case SHORT:
+						miscShort = true;
+						break;
+					case BOTH:
+						miscLong = true;
+						miscShort = true;
+						break;
+				}
+
+				if (rsEmoji != null)
 				{
 					final int rsEmojiId = modIconsStart + rsEmoji.ordinal();
-					if (0 <= rsEmoji.ordinal() && rsEmoji.ordinal() <= 24)
+					if (skillLong && rsEmoji.ordinal() <= 24)
 					{
 						if (config.swapIconMode() == IconMode.REPLACE)
 						{
@@ -243,13 +259,24 @@ public class emojiscapePlugin extends Plugin
 							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsEmojiId + ">)");
 						}
 					}
+					if (miscLong && 33 <= rsEmoji.ordinal() && rsEmoji.ordinal() <= 50)
+					{
+						if (config.swapIconMode() == IconMode.REPLACE)
+						{
+							messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsEmojiId + ">");
+						}
+						else if (config.swapIconMode() == IconMode.APPEND)
+						{
+							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsEmojiId + ">)");
+						}
+					}
 					editedMessage = true;
 				}
 
-				if (rsShortEmoji != null && skillShort && editedMessage == false)
+				if (rsShortEmoji != null && !editedMessage)
 				{
 					final int rsShortEmojiId = modIconsStart + rsShortEmoji.ordinal();
-					if (0 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 24)
+					if (skillShort && rsShortEmoji.ordinal() <= 24)
 					{
 						if (config.swapIconMode() == IconMode.REPLACE)
 						{
@@ -272,8 +299,20 @@ public class emojiscapePlugin extends Plugin
 							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsShortEmojiId + ">)");
 						}
 					}
+
+					if (miscShort && 33 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 50)
+					{
+						if (config.swapIconMode() == IconMode.REPLACE)
+						{
+							messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsShortEmojiId + ">");
+						}
+						else if (config.swapIconMode() == IconMode.APPEND)
+						{
+							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsShortEmojiId + ">)");
+						}
+					}
+					editedMessage = true;
 				}
-				editedMessage = true;
 			}
 			slashWords[s] = Strings.join(messageWords, " ");
 		}

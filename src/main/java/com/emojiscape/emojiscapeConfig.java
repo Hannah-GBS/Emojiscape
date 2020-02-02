@@ -49,9 +49,9 @@ public interface emojiscapeConfig extends Config
 		description = "Enable icons for skills, with long and/or short triggers",
 		position = 2
 	)
-	default SkillIcons skillIcons()
+	default TriggerMode skillIcons()
 	{
-		return SkillIcons.BOTH;
+		return TriggerMode.BOTH;
 	}
 
 	@ConfigItem(
@@ -63,5 +63,16 @@ public interface emojiscapeConfig extends Config
 	default boolean prayerIcons()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "miscIcons",
+		name = "Misc Icons",
+		description = "A mix of common map icons (bank, altar, shortcut) and other misc icons (listed on support repo)",
+		position = 4
+	)
+	default TriggerMode miscIcons()
+	{
+		return TriggerMode.BOTH;
 	}
 }

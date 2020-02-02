@@ -28,9 +28,10 @@ package com.emojiscape;
 import com.google.common.collect.ImmutableMap;
 import java.awt.image.BufferedImage;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.util.ImageUtil;
 
-
+@Slf4j
 enum RSEmoji
 {
 	AGILITY("agility", "agi"),
@@ -66,6 +67,24 @@ enum RSEmoji
 	RETRIBUTION("retribution", "retribution"),
 	RIGOUR("rigour", "rigour"),
 	SMITE("smite", "smite"),
+	BANK("bank", "bank"),
+	ALTAR("altar", "altar"),
+	SHORTCUT("shortcut", "shortcut"),
+	QUEST("quest", "qp"),
+	DIARY("diary", "diary"),
+	FAVOUR("favour", "favour"),
+	ARCEUUS("arceuus", "arc"),
+	HOSIDIUS("hosidius", "hosi"),
+	LOVAKENGJ("lovakengj", "lova"),
+	PISCARILIUS("piscarilius", "pisc"),
+	SHAYZIEN("shayzien", "shayz"),
+	COINS("coins", "gp"),
+	EXCHANGE("exchange", "ge"),
+	IRONMAN("ironman", "im"),
+	HARDCORE("hardcore", "hcim"),
+	ULTIMATE("ultimate", "uim"),
+	JMOD("jmod", "jmod"),
+	PMOD("pmod", "pmod"),
 	;
 
 	private static final Map<String, RSEmoji> skillLongEmojiMap;
@@ -106,7 +125,25 @@ enum RSEmoji
 
 	BufferedImage loadImage()
 	{
-		return ImageUtil.getResourceStreamFromClass(getClass(), "/" + this.name().toLowerCase() + ".png");
+		try
+		{
+			return ImageUtil.getResourceStreamFromClass(getClass(), "/Skills/" + this.name().toLowerCase() + ".png");
+		}
+		catch (Exception ex)
+		{
+			log.debug("Emoji icon not in /Skills/");
+		}
+
+		try
+		{
+			return ImageUtil.getResourceStreamFromClass(getClass(), "/Prayers/" + this.name().toLowerCase() + ".png");
+		}
+		catch (Exception ex)
+		{
+			log.debug("Emoji icon not in /Prayers/");
+		}
+
+		return ImageUtil.getResourceStreamFromClass(getClass(), "/Misc/" + this.name().toLowerCase() + ".png");
 	}
 
 	public static RSEmoji getRSEmoji(String longTrigger)
