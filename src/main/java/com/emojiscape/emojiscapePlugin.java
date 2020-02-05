@@ -309,8 +309,8 @@ public class emojiscapePlugin extends Plugin
 							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsShortEmojiId + ">)");
 						}
 					}
-					editedMessage = true;
 				}
+				editedMessage = true;
 			}
 			slashWords[s] = Strings.join(messageWords, " ");
 		}
