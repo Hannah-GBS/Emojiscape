@@ -40,7 +40,7 @@ public interface emojiscapeConfig extends Config
 	)
 	default IconMode swapIconMode()
 	{
-		return IconMode.REPLACE;
+		return IconMode.APPEND;
 	}
 
 	@ConfigItem(
