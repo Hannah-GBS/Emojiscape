@@ -72,14 +72,15 @@ enum RSEmoji
 		return prop.getProperty(this.name() + "." + LongorShort);
 	}
 
-	public String longTrigger() throws IOException
+	public String[] longTrigger() throws IOException
 	{
-		return getProperty("LongTrigger");
+		return getProperty("LongTrigger").split("\\s*,\\s*");
+
 	}
 
-	public String shortTrigger() throws IOException
+	public String[] shortTrigger() throws IOException
 	{
-		return getProperty("ShortTrigger");
+		return getProperty("ShortTrigger").split("\\s*,\\s*");
 	}
 
 	private static final Map<String, RSEmoji> skillLongEmojiMap;
@@ -93,7 +94,11 @@ enum RSEmoji
 		{
 			try
 			{
-				builder.put(RSEmoji.longTrigger(), RSEmoji);
+				for (int i = 0; i < RSEmoji.longTrigger().length; i++)
+				{
+					builder.put(RSEmoji.longTrigger()[i], RSEmoji);
+				}
+
 			}
 			catch (IOException e)
 			{
@@ -112,7 +117,10 @@ enum RSEmoji
 		{
 			try
 			{
-				builder.put(RSEmoji.shortTrigger(), RSEmoji);
+				for (int i = 0; i < RSEmoji.shortTrigger().length; i++)
+				{
+					builder.put(RSEmoji.shortTrigger()[i], RSEmoji);
+				}
 			}
 			catch (IOException e)
 			{

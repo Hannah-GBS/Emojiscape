@@ -94,3 +94,9 @@ Icon | Long Trigger | Short Trigger
 ![Ultimate](src/main/resources/Misc/ultimate.png) | ultimate | uim
 ![JMod](src/main/resources/Misc/jmod.png) | jmod | jmod
 ![pmod](src/main/resources/Misc/pmod.png) | pmod | pmod
+
+### Custom Triggers
+
+You can customise the triggers by editing the contents of the `emojiscape.properties` file in your `.runelite` directory (found at `%userprofile%\.runelite` on Windows and `~/.runelite` on MacOS and Linux).
+
+You can set multiple triggers per icon with a comma separated list. For example, `IRONMAN.ShortTrigger=im, iron` would result in both "im" and "iron" showing the Ironman icon.
