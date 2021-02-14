@@ -112,7 +112,7 @@ public class emojiscapePlugin extends Plugin
 
 			try
 			{
-				final BufferedImage image = RSEmoji.loadImage();
+				final BufferedImage image = RSEmoji.loadImage(RSEmoji);
 				final IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
 				newModIcons[modIconsStart + i] = sprite;
 			}

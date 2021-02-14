@@ -132,27 +132,20 @@ enum RSEmoji
 	}
 
 
-	BufferedImage loadImage()
+	BufferedImage loadImage(RSEmoji rsEmoji)
 	{
-		try
+		switch (rsEmoji)
 		{
-			return ImageUtil.getResourceStreamFromClass(getClass(), "/Skills/" + this.name().toLowerCase() + ".png");
-		}
-		catch (Exception ex)
-		{
-			log.debug("Emoji icon not in /Skills/");
-		}
+			case AGILITY: case ATTACK: case COMBAT: case CONSTRUCTION: case COOKING: case CRAFTING: case DEFENCE: case FARMING:
+			case FIREMAKING: case FISHING: case FLETCHING: case HERBLORE: case HITPOINTS: case HUNTER: case MAGIC: case MELEE:
+			case MINING: case PRAYER: case RANGED: case RUNECRAFT: case SLAYER: case SMITHING: case STRENGTH: case THIEVING: case WOODCUTTING:
+				return ImageUtil.loadImageResource(getClass(), "/Skills/" + this.name().toLowerCase() + ".png");
 
-		try
-		{
-			return ImageUtil.getResourceStreamFromClass(getClass(), "/Prayers/" + this.name().toLowerCase() + ".png");
-		}
-		catch (Exception ex)
-		{
-			log.debug("Emoji icon not in /Prayers/");
-		}
+			case AUGURY: case CHIVALRY: case PIETY: case PRESERVE: case REDEMPTION: case RETRIBUTION: case RIGOUR: case SMITE:
+				return ImageUtil.loadImageResource(getClass(), "/Prayers/" + this.name().toLowerCase() + ".png");
 
-		return ImageUtil.getResourceStreamFromClass(getClass(), "/Misc/" + this.name().toLowerCase() + ".png");
+			default: return ImageUtil.loadImageResource(getClass(), "/Misc/" + this.name().toLowerCase() + ".png");
+		}
 	}
 
 	public static RSEmoji getRSEmoji(String longTrigger)
