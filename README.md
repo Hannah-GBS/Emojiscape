@@ -1,7 +1,7 @@
 # EmojiScape
 This plugin converts common RS words in chat to their corresponding in-game icon.
 
-If you have any questions or suggestions feel free to either make an Issue here, or @ me on the Runelite Discord (`@Hannah (loldudester)#6969`)
+If you have any questions or suggestions feel free to either make an Issue here, or @ me on the Runelite Discord (`@Hannah#7777`)
 
 ## Current icons:
 
