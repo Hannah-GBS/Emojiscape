@@ -183,6 +183,22 @@ public class emojiscapePlugin extends Plugin
 	@Nullable
 	String updateMessage(final String message)
 	{
+		String surroundLeft;
+		String surroundRight;
+		switch (config.afterTextStyle())
+		{
+			case ROUND:
+				surroundLeft = "(";
+				surroundRight = ")";
+				break;
+			case SQUARE:
+				surroundLeft = "[";
+				surroundRight = "]";
+				break;
+			default:
+				surroundLeft = "";
+				surroundRight = "";
+		}
 		final String[] slashWords = SLASH_REGEXP.split(message);
 		boolean editedMessage = false;
 		for (int s = 0; s < slashWords.length; s++)
@@ -275,7 +291,7 @@ public class emojiscapePlugin extends Plugin
 					}
 					else if (config.swapIconMode() == IconMode.APPEND)
 					{
-						messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsEmojiId + ">)");
+						messageWords[i] = messageWords[i].replace(trigger, trigger + surroundLeft + "<img=" + rsEmojiId + ">" + surroundRight);
 					}
 				}
 				editedMessage = true;

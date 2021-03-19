@@ -25,65 +25,22 @@
 
 package com.emojiscape;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@ConfigGroup("EmojiScape")
-public interface emojiscapeConfig extends Config
+@Getter
+@RequiredArgsConstructor
+public enum AfterTextStyle
 {
-	@ConfigItem(
-		keyName = "swapIconMode",
-		name = "Icon Mode",
-		description = "Choose whether the skill icon should replace the text, or appear after it",
-		position = 1
-	)
-	default IconMode swapIconMode()
-	{
-		return IconMode.APPEND;
-	}
+	NONE("No style"),
+	ROUND("(Round)"),
+	SQUARE("[Square]");
 
-	@ConfigItem(
-		keyName = "afterTextStyle",
-		name = "After Text Style",
-		description = "If \"After Text\" is selected for Icon Mode, which style to apply to the icons.",
-		position = 2
-	)
-	default AfterTextStyle afterTextStyle()
-	{
-		return AfterTextStyle.ROUND;
-	}
+	private final String name;
 
-	@ConfigItem(
-		keyName = "skillIcons",
-		name = "Skill Icons",
-		description = "Enable icons for skills, with long and/or short triggers",
-		position = 3
-	)
-	default TriggerMode skillIcons()
+	@Override
+	public String toString()
 	{
-		return TriggerMode.BOTH;
-	}
-
-	@ConfigItem(
-		keyName = "prayerIcons",
-		name = "Prayer Icons",
-		description = "Enables icons for high level prayers (from Retribution to Augury)",
-		position = 4
-	)
-	default boolean prayerIcons()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "miscIcons",
-		name = "Misc Icons",
-		description = "A mix of common map icons (bank, altar, shortcut) and other misc icons (listed on support repo)",
-		position = 5
-	)
-	default TriggerMode miscIcons()
-	{
-		return TriggerMode.BOTH;
+		return name;
 	}
 }
