@@ -55,12 +55,15 @@ enum RSEmoji
 		int failCount = 0;
 		int maxFails = 3;
 		Properties prop = new Properties();
-		while(true)
+		while (true)
 		{
-			try {
+			try
+			{
 				prop.load(new FileInputStream(RuneLite.RUNELITE_DIR + "/emojiscape.properties"));
 				break;
-			} catch (Exception e) {
+			}
+			catch (Exception e)
+			{
 				URL inputURL = getClass().getResource("/emojiscape.properties");
 				File dest = new File(RuneLite.RUNELITE_DIR + "/emojiscape.properties");
 				log.error("Could not find emojiscape.properties so creating it at: " + dest.getAbsolutePath());

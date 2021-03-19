@@ -196,9 +196,12 @@ public class emojiscapePlugin extends Plugin
 				final String pretrigger = removeTags(messageWords[i]);
 				final Matcher matcherTrigger = PUNCTUATION_REGEXP.matcher(pretrigger);
 				final String trigger = matcherTrigger.replaceAll("");
-				final String shortTrigger = trigger;
+				if (trigger.equals(""))
+				{
+					continue;
+				}
 				final RSEmoji rsEmoji = RSEmoji.getRSEmoji(trigger.toLowerCase());
-				final RSEmoji rsShortEmoji = RSEmoji.getShortRSEmoji(shortTrigger.toLowerCase());
+				final RSEmoji rsShortEmoji = RSEmoji.getShortRSEmoji(trigger.toLowerCase());
 
 				if (rsEmoji == null && rsShortEmoji == null)
 				{
@@ -284,11 +287,11 @@ public class emojiscapePlugin extends Plugin
 					{
 						if (config.swapIconMode() == IconMode.REPLACE)
 						{
-							messageWords[i] = messageWords[i].replace(shortTrigger, "<img=" + rsShortEmojiId + ">");
+							messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsShortEmojiId + ">");
 						}
 						else if (config.swapIconMode() == IconMode.APPEND)
 						{
-							messageWords[i] = messageWords[i].replace(shortTrigger, shortTrigger + "(<img=" + rsShortEmojiId + ">)");
+							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsShortEmojiId + ">)");
 						}
 					}
 					if (config.prayerIcons() && 25 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 32)
