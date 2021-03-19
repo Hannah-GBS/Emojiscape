@@ -192,6 +192,7 @@ public class emojiscapePlugin extends Plugin
 			for (int i = 0; i < messageWords.length; i++)
 			{
 				boolean longTriggerUsed = false;
+				boolean editWord = false;
 				//Remove tags except for <lt> and <gt>
 				final String pretrigger = removeTags(messageWords[i]);
 				final Matcher matcherTrigger = PUNCTUATION_REGEXP.matcher(pretrigger);
@@ -241,80 +242,40 @@ public class emojiscapePlugin extends Plugin
 						break;
 				}
 
+				int rsEmojiId = 0;
+
 				if (rsEmoji != null)
 				{
-					final int rsEmojiId = modIconsStart + rsEmoji.ordinal();
-					if (skillLong && rsEmoji.ordinal() <= 24)
+					rsEmojiId = modIconsStart + rsEmoji.ordinal();
+					if ((skillLong && rsEmoji.ordinal() <= 24)
+					|| (config.prayerIcons() && 25 <= rsEmoji.ordinal() && rsEmoji.ordinal() <= 32)
+					|| (miscLong && 33 <= rsEmoji.ordinal() && rsEmoji.ordinal() <= 51))
 					{
-						if (config.swapIconMode() == IconMode.REPLACE)
-						{
-							messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsEmojiId + ">");
-						}
-						else if (config.swapIconMode() == IconMode.APPEND)
-						{
-							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsEmojiId + ">)");
-						}
-					}
-					if (config.prayerIcons() && 25 <= rsEmoji.ordinal() && rsEmoji.ordinal() <= 32)
-					{
-						if (config.swapIconMode() == IconMode.REPLACE)
-						{
-							messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsEmojiId + ">");
-						}
-						else if (config.swapIconMode() == IconMode.APPEND)
-						{
-							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsEmojiId + ">)");
-						}
-					}
-					if (miscLong && 33 <= rsEmoji.ordinal() && rsEmoji.ordinal() <= 51)
-					{
-						if (config.swapIconMode() == IconMode.REPLACE)
-						{
-							messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsEmojiId + ">");
-						}
-						else if (config.swapIconMode() == IconMode.APPEND)
-						{
-							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsEmojiId + ">)");
-						}
+						editWord = true;
 					}
 					longTriggerUsed = true;
 				}
 
 				if (rsShortEmoji != null && !longTriggerUsed)
 				{
-					final int rsShortEmojiId = modIconsStart + rsShortEmoji.ordinal();
-					if (skillShort && rsShortEmoji.ordinal() <= 24)
+					rsEmojiId = modIconsStart + rsShortEmoji.ordinal();
+					if ((skillShort && rsShortEmoji.ordinal() <= 24)
+					|| (config.prayerIcons() && 25 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 32)
+					|| (miscShort && 33 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 51))
 					{
-						if (config.swapIconMode() == IconMode.REPLACE)
-						{
-							messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsShortEmojiId + ">");
-						}
-						else if (config.swapIconMode() == IconMode.APPEND)
-						{
-							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsShortEmojiId + ">)");
-						}
+						editWord = true;
 					}
-					if (config.prayerIcons() && 25 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 32)
+				}
+
+				if (editWord && rsEmojiId != 0)
+				{
+					if (config.swapIconMode() == IconMode.REPLACE)
 					{
-						if (config.swapIconMode() == IconMode.REPLACE)
-						{
-							messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsShortEmojiId + ">");
-						}
-						else if (config.swapIconMode() == IconMode.APPEND)
-						{
-							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsShortEmojiId + ">)");
-						}
+						messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsEmojiId + ">");
 					}
-					if (miscShort && 33 <= rsShortEmoji.ordinal() && rsShortEmoji.ordinal() <= 51)
+					else if (config.swapIconMode() == IconMode.APPEND)
 					{
-						if (config.swapIconMode() == IconMode.REPLACE)
-						{
-							messageWords[i] = messageWords[i].replace(trigger, "<img=" + rsShortEmojiId + ">");
-						}
-						else if (config.swapIconMode() == IconMode.APPEND)
-						{
-							messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsShortEmojiId + ">)");
-						}
+						messageWords[i] = messageWords[i].replace(trigger, trigger + "(<img=" + rsEmojiId + ">)");
 					}
 				}
 				editedMessage = true;
