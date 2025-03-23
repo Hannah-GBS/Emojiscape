@@ -27,16 +27,16 @@ package com.emojiscape;
 
 import com.google.common.collect.ImmutableMap;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Properties;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.util.ImageUtil;
-import org.apache.commons.io.FileUtils;
 
 @Slf4j
 enum RSEmoji
@@ -57,18 +57,18 @@ enum RSEmoji
 		Properties prop = new Properties();
 		while (true)
 		{
+			Path path = Paths.get(RuneLite.RUNELITE_DIR + "/emojiscape.properties");
 			try
 			{
-				prop.load(new FileInputStream(RuneLite.RUNELITE_DIR + "/emojiscape.properties"));
+				prop.load(Files.newInputStream(path));
 				break;
 			}
 			catch (Exception e)
 			{
-				URL inputURL = getClass().getResource("/emojiscape.properties");
-				File dest = new File(RuneLite.RUNELITE_DIR + "/emojiscape.properties");
-				log.error("Could not find emojiscape.properties so creating it at: " + dest.getAbsolutePath());
+				InputStream inputStream = getClass().getResourceAsStream("/emojiscape.properties");
+				log.error("Could not find emojiscape.properties so creating it at: " + path.toAbsolutePath());
 
-				FileUtils.copyURLToFile(inputURL, dest);
+				Files.copy(inputStream, path);
 				if (++failCount == maxFails) throw e;
 			}
 		}
