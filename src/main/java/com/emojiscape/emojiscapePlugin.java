@@ -133,13 +133,16 @@ public class emojiscapePlugin extends Plugin
 
 		switch (chatMessage.getType())
 		{
+			case CLAN_MESSAGE:
+			case CLAN_GUEST_MESSAGE:
+				if (!config.ccAnnouncements()) {
+					return;
+				}
 			case PUBLICCHAT:
 			case MODCHAT:
 			case FRIENDSCHAT:
 			case CLAN_CHAT:
-			case CLAN_MESSAGE:
 			case CLAN_GUEST_CHAT:
-			case CLAN_GUEST_MESSAGE:
 			case PRIVATECHAT:
 			case PRIVATECHATOUT:
 			case MODPRIVATECHAT:

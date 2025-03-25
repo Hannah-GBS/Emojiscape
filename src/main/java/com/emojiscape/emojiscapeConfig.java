@@ -86,4 +86,14 @@ public interface emojiscapeConfig extends Config
 	{
 		return TriggerMode.BOTH;
 	}
+
+	@ConfigItem(
+		keyName = "ccAnnouncements",
+		name = "Clan Chat Announcements",
+		description = "Whether to convert words in Clan Chat announcements (such as level up announcements) to icons",
+		position = 6
+	)
+	default boolean ccAnnouncements(){
+		return true;
+	}
 }
