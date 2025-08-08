@@ -131,11 +131,14 @@ public class emojiscapePlugin extends Plugin
 			return;
 		}
 
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		final String message = messageNode.getValue();
+
 		switch (chatMessage.getType())
 		{
 			case CLAN_MESSAGE:
 			case CLAN_GUEST_MESSAGE:
-				if (!config.ccAnnouncements()) {
+				if (!config.ccAnnouncements() || !message.contains("has reached")) {
 					return;
 				}
 			case PUBLICCHAT:
@@ -151,8 +154,7 @@ public class emojiscapePlugin extends Plugin
 				return;
 		}
 
-		final MessageNode messageNode = chatMessage.getMessageNode();
-		final String message = messageNode.getValue();
+
 		final String updatedMessage = updateMessage(message);
 
 		if (updatedMessage == null)
